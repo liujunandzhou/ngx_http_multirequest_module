@@ -50,12 +50,12 @@ bool ModuleLoader::InitModule()
 	return false;
 }
 
-boost::shared_ptr<Handler>& ModuleLoader::GetHandler()
+SHARED_PTR<Handler>& ModuleLoader::GetHandler()
 {
 	return handler;
 }
 
-boost::shared_ptr<Handler> ModuleLoader::Load(const std::string& path)
+SHARED_PTR<Handler> ModuleLoader::Load(const std::string& path)
 {
 	Handler* module = NULL;
 	void * dlhandle = NULL;
@@ -64,7 +64,7 @@ boost::shared_ptr<Handler> ModuleLoader::Load(const std::string& path)
 
 	dlhandle = dlopen(path.c_str(), RTLD_LAZY);
 	if (!dlhandle) {
-		std::cerr<<"dlopen failed:"<<dlerror()<<std::endl;
+		std::cerr<<"dlopen failed"<<std::endl;
 		goto failed;
 	}   
 
@@ -72,7 +72,7 @@ boost::shared_ptr<Handler> ModuleLoader::Load(const std::string& path)
 	destroy_module = (DestroyModuleFn)dlsym(dlhandle, kDestroyModuleFnName);
 	if (!create_module || !destroy_module) {
 		
-		std::cerr<<"dlsym failed:"<<dlerror()<<std::endl;
+		std::cerr<<"dlsym failed"<<std::endl;
 		goto failed;
 	}   
 
@@ -85,12 +85,12 @@ boost::shared_ptr<Handler> ModuleLoader::Load(const std::string& path)
 	dh_ = dlhandle;
 	create_module_ = create_module;
 	destroy_module_ = destroy_module;
-	return boost::shared_ptr<Handler>(module, destroy_module);
+	return SHARED_PTR<Handler>(module, destroy_module);
 
 failed:
 	if (dlhandle) {
 		dlclose(dlhandle);
 		dlhandle=NULL;
 	}
-	return boost::shared_ptr<Handler>();
+	return SHARED_PTR<Handler>();
 }

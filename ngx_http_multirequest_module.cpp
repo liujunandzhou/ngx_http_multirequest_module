@@ -53,7 +53,7 @@ typedef struct{
 	bool handler_set;	
 	bool handler_inited;
 	module_info mod_info;
-	boost::shared_ptr<ModuleLoader> module_handler;
+	SHARED_PTR<ModuleLoader> module_handler;
 }ngx_http_multirequest_module_loc_conf_t;
 
 static char *ngx_http_multirequest_module_add_handler_command(ngx_conf_t *cf,ngx_command_t *cmd,void *conf);

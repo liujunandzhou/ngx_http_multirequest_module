@@ -20,7 +20,7 @@
 #define __MODULE_LOADER_H__
 
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include "shared_ptr_wrapper.h"
 
 class Handler;
 
@@ -44,10 +44,10 @@ class ModuleLoader
 
 		bool InitModule();
 
-		boost::shared_ptr<Handler> &GetHandler();
+		SHARED_PTR<Handler> &GetHandler();
 
 	private:
-		boost::shared_ptr<Handler> Load(const std::string& path);
+		SHARED_PTR<Handler> Load(const std::string& path);
 
 
 	private:
@@ -56,7 +56,7 @@ class ModuleLoader
 		std::string module_path;
 		std::string module_args;
 
-	    boost::shared_ptr<Handler> handler;
+	    SHARED_PTR<Handler> handler;
 
 		void* dh_;
 
